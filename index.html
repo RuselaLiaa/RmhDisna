@@ -1,0 +1,1480 @@
+from pathlib import Path
+
+html = r'''<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="A modern home fixtures showroom featuring tiles, faucets, sinks, pipes, showers, and essential renovation supplies." />
+  <meta name="theme-color" content="#101513" />
+  <title>FormHaus | Home Fixtures & Interior Supply</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --ink: #111714;
+      --ink-soft: #1d2923;
+      --forest: #244c3c;
+      --sage: #8ca796;
+      --mist: #e7eee9;
+      --sand: #e8d8bf;
+      --clay: #bd7857;
+      --cream: #f7f4ee;
+      --white: #ffffff;
+      --text: #17221d;
+      --muted: #6c7871;
+      --line: rgba(17, 23, 20, 0.11);
+      --shadow: 0 30px 70px rgba(27, 44, 35, 0.13);
+      --radius-xl: 36px;
+      --radius-lg: 26px;
+      --radius-md: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Manrope", sans-serif;
+      color: var(--text);
+      background: var(--cream);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    img {
+      width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1200px, calc(100% - 36px));
+      margin: 0 auto;
+    }
+
+    .announcement {
+      background: var(--ink);
+      color: rgba(255,255,255,0.78);
+      font-size: 0.8rem;
+      letter-spacing: 0.03em;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    .marquee {
+      display: inline-flex;
+      gap: 45px;
+      padding: 10px 0;
+      min-width: max-content;
+      animation: marquee 20s linear infinite;
+    }
+
+    .marquee span::before {
+      content: "◆";
+      margin-right: 14px;
+      color: var(--sand);
+      font-size: 0.65rem;
+    }
+
+    @keyframes marquee {
+      to { transform: translateX(-50%); }
+    }
+
+    .nav-shell {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 14px 0;
+      background: rgba(247, 244, 238, 0.82);
+      border-bottom: 1px solid rgba(17, 23, 20, 0.06);
+      backdrop-filter: blur(18px);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+    }
+
+    .brand-mark {
+      width: 44px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 13px;
+      background:
+        linear-gradient(145deg, transparent 48%, rgba(255,255,255,0.18) 49%),
+        var(--forest);
+      color: var(--white);
+      box-shadow: 0 13px 28px rgba(36, 76, 60, 0.2);
+      font-size: 1.3rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      color: var(--muted);
+      font-size: 0.91rem;
+      font-weight: 700;
+    }
+
+    .nav-links a {
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: -7px;
+      height: 2px;
+      background: var(--forest);
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--ink);
+    }
+
+    .nav-links a:hover::after {
+      right: 0;
+    }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 18px;
+      border-radius: 14px;
+      background: var(--ink);
+      color: var(--white);
+      font-size: 0.85rem;
+      font-weight: 800;
+      box-shadow: 0 14px 28px rgba(17, 23, 20, 0.14);
+    }
+
+    .hero {
+      position: relative;
+      min-height: 760px;
+      display: grid;
+      align-items: center;
+      overflow: hidden;
+      background: var(--ink);
+      color: var(--white);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      width: 520px;
+      height: 520px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(189, 120, 87, 0.36), transparent 68%);
+      top: -170px;
+      right: -100px;
+      animation: breathe 6s ease-in-out infinite;
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(17,23,20,0.93) 0%, rgba(17,23,20,0.72) 47%, rgba(17,23,20,0.18) 74%, rgba(17,23,20,0.28) 100%),
+        url("https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?auto=format&fit=crop&w=1900&q=88") center/cover;
+      z-index: 0;
+    }
+
+    @keyframes breathe {
+      50% { transform: scale(1.15); opacity: 0.7; }
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      align-items: center;
+      gap: 50px;
+      padding: 110px 0 95px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 34px;
+      height: 2px;
+      background: currentColor;
+      opacity: 0.65;
+    }
+
+    .hero h1,
+    h2,
+    h3 {
+      font-family: "Playfair Display", serif;
+      line-height: 1.06;
+    }
+
+    .hero h1 {
+      margin-top: 22px;
+      font-size: clamp(3.8rem, 7vw, 7.5rem);
+      max-width: 760px;
+      letter-spacing: -0.055em;
+    }
+
+    .hero h1 em {
+      color: var(--sand);
+      font-weight: 700;
+    }
+
+    .hero-copy {
+      margin-top: 27px;
+      max-width: 640px;
+      color: rgba(255,255,255,0.72);
+      font-size: 1.06rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 34px;
+    }
+
+    .btn {
+      min-height: 54px;
+      padding: 0 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 15px;
+      font-weight: 800;
+      transition: 0.25s ease;
+    }
+
+    .btn-primary {
+      background: var(--sand);
+      color: var(--ink);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 35px rgba(232, 216, 191, 0.18);
+    }
+
+    .btn-ghost {
+      border: 1px solid rgba(255,255,255,0.22);
+      color: var(--white);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.08);
+    }
+
+    .hero-showcase {
+      align-self: end;
+      justify-self: end;
+      width: min(100%, 420px);
+      padding: 24px;
+      border-radius: 26px;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.16);
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 70px rgba(0,0,0,0.2);
+      animation: floatCard 5s ease-in-out infinite;
+    }
+
+    @keyframes floatCard {
+      50% { transform: translateY(-12px); }
+    }
+
+    .showcase-image {
+      height: 230px;
+      overflow: hidden;
+      border-radius: 18px;
+      background: var(--mist);
+    }
+
+    .showcase-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: 0.5s ease;
+    }
+
+    .hero-showcase:hover img {
+      transform: scale(1.06);
+    }
+
+    .showcase-topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .showcase-topline strong {
+      font-size: 1rem;
+    }
+
+    .showcase-topline span {
+      color: var(--sand);
+      font-size: 0.76rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .showcase-meta {
+      margin-top: 7px;
+      color: rgba(255,255,255,0.58);
+      font-size: 0.86rem;
+    }
+
+    .hero-badge {
+      position: absolute;
+      right: 25px;
+      top: 24px;
+      width: 84px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      text-align: center;
+      border-radius: 50%;
+      background: var(--clay);
+      color: var(--white);
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      box-shadow: 0 15px 35px rgba(189, 120, 87, 0.3);
+      animation: spinSlow 18s linear infinite;
+    }
+
+    @keyframes spinSlow {
+      to { transform: rotate(360deg); }
+    }
+
+    section {
+      padding: 92px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+      align-items: end;
+      margin-bottom: 38px;
+    }
+
+    .section-head h2 {
+      margin-top: 14px;
+      max-width: 760px;
+      font-size: clamp(2.7rem, 5vw, 5rem);
+      letter-spacing: -0.045em;
+    }
+
+    .section-head p {
+      max-width: 430px;
+      color: var(--muted);
+    }
+
+    .category-grid {
+      display: grid;
+      grid-template-columns: 1.3fr 0.7fr 0.7fr;
+      grid-template-rows: 280px 280px;
+      gap: 18px;
+    }
+
+    .category-card {
+      position: relative;
+      overflow: hidden;
+      border-radius: 26px;
+      background: var(--ink-soft);
+      color: var(--white);
+      box-shadow: 0 18px 45px rgba(25, 39, 31, 0.1);
+      isolation: isolate;
+    }
+
+    .category-card.large {
+      grid-row: 1 / span 2;
+    }
+
+    .category-card.wide {
+      grid-column: 2 / span 2;
+    }
+
+    .category-card img {
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.65s ease;
+    }
+
+    .category-card::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(10,16,13,0.88), rgba(10,16,13,0.04) 70%);
+      z-index: 1;
+    }
+
+    .category-card:hover img {
+      transform: scale(1.08);
+    }
+
+    .category-info {
+      position: absolute;
+      inset: auto 24px 23px;
+      z-index: 2;
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .category-info h3 {
+      font-size: 1.85rem;
+    }
+
+    .category-info p {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.82rem;
+      margin-top: 4px;
+    }
+
+    .round-arrow {
+      width: 46px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.35);
+      backdrop-filter: blur(10px);
+      transition: 0.25s ease;
+      flex: 0 0 auto;
+    }
+
+    .category-card:hover .round-arrow {
+      background: var(--white);
+      color: var(--ink);
+      transform: rotate(-35deg);
+    }
+
+    .feature-strip {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: rgba(255,255,255,0.13);
+      border: 1px solid rgba(255,255,255,0.13);
+      border-radius: 26px;
+      overflow: hidden;
+    }
+
+    .feature {
+      padding: 30px 24px;
+      background: var(--forest);
+    }
+
+    .feature-icon {
+      width: 48px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 15px;
+      background: rgba(255,255,255,0.1);
+      font-size: 1.35rem;
+      margin-bottom: 18px;
+    }
+
+    .feature strong {
+      display: block;
+      font-size: 0.95rem;
+    }
+
+    .feature p {
+      margin-top: 7px;
+      color: rgba(255,255,255,0.61);
+      font-size: 0.84rem;
+    }
+
+    .products {
+      background:
+        radial-gradient(circle at 5% 10%, rgba(140,167,150,0.2), transparent 28%),
+        var(--cream);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 19px;
+    }
+
+    .product-card {
+      position: relative;
+      border-radius: 24px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      overflow: hidden;
+      transition: 0.28s ease;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: var(--shadow);
+    }
+
+    .product-image {
+      height: 260px;
+      overflow: hidden;
+      background: #eceeea;
+    }
+
+    .product-image img {
+      height: 100%;
+      object-fit: cover;
+      transition: 0.55s ease;
+    }
+
+    .product-card:hover .product-image img {
+      transform: scale(1.07);
+    }
+
+    .product-tag {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 2;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.9);
+      backdrop-filter: blur(10px);
+      color: var(--ink);
+      font-size: 0.66rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .product-info {
+      padding: 19px;
+    }
+
+    .product-info h3 {
+      font-size: 1.35rem;
+    }
+
+    .product-info p {
+      color: var(--muted);
+      font-size: 0.82rem;
+      margin-top: 6px;
+    }
+
+    .product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 17px;
+    }
+
+    .product-bottom strong {
+      color: var(--forest);
+      font-size: 0.87rem;
+    }
+
+    .product-bottom span {
+      width: 36px;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 11px;
+      background: var(--mist);
+      transition: 0.25s ease;
+    }
+
+    .product-card:hover .product-bottom span {
+      background: var(--forest);
+      color: var(--white);
+    }
+
+    .inspiration {
+      background: var(--ink);
+      color: var(--white);
+      overflow: hidden;
+    }
+
+    .inspiration-grid {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 58px;
+      align-items: center;
+    }
+
+    .inspiration-copy h2 {
+      margin-top: 18px;
+      font-size: clamp(2.9rem, 5vw, 5.5rem);
+      letter-spacing: -0.05em;
+    }
+
+    .inspiration-copy p {
+      margin-top: 20px;
+      max-width: 560px;
+      color: rgba(255,255,255,0.64);
+    }
+
+    .material-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 28px;
+    }
+
+    .material-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .material-item strong {
+      font-size: 0.92rem;
+    }
+
+    .material-item span {
+      color: var(--sand);
+      font-size: 0.8rem;
+    }
+
+    .inspiration-visual {
+      position: relative;
+      min-height: 600px;
+    }
+
+    .main-room {
+      position: absolute;
+      inset: 0 0 50px 60px;
+      border-radius: 34px;
+      overflow: hidden;
+      box-shadow: 0 35px 80px rgba(0,0,0,0.3);
+    }
+
+    .main-room img {
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .detail-card {
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 240px;
+      padding: 16px;
+      border-radius: 22px;
+      background: var(--cream);
+      color: var(--ink);
+      box-shadow: var(--shadow);
+      animation: floatCard 5.5s ease-in-out infinite;
+    }
+
+    .detail-card img {
+      height: 150px;
+      object-fit: cover;
+      border-radius: 15px;
+    }
+
+    .detail-card strong {
+      display: block;
+      margin-top: 13px;
+      font-size: 0.88rem;
+    }
+
+    .detail-card span {
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .process-card {
+      padding: 26px;
+      border-radius: 23px;
+      border: 1px solid var(--line);
+      background: var(--white);
+      min-height: 230px;
+      transition: 0.25s ease;
+    }
+
+    .process-card:hover {
+      background: var(--mist);
+      transform: translateY(-5px);
+    }
+
+    .process-num {
+      font-family: "Playfair Display", serif;
+      font-size: 2.7rem;
+      color: var(--clay);
+    }
+
+    .process-card h3 {
+      margin-top: 42px;
+      font-size: 1.45rem;
+    }
+
+    .process-card p {
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.86rem;
+    }
+
+    .cta-panel {
+      position: relative;
+      overflow: hidden;
+      padding: 60px;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(115deg, rgba(36,76,60,0.94), rgba(17,23,20,0.82)),
+        url("https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1600&q=86") center/cover;
+      color: var(--white);
+      box-shadow: var(--shadow);
+    }
+
+    .cta-panel::after {
+      content: "";
+      position: absolute;
+      width: 230px;
+      height: 230px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 50%;
+      right: -50px;
+      top: -50px;
+      box-shadow:
+        0 0 0 35px rgba(255,255,255,0.04),
+        0 0 0 70px rgba(255,255,255,0.025);
+    }
+
+    .cta-panel h2 {
+      max-width: 760px;
+      font-size: clamp(2.8rem, 5vw, 5rem);
+      letter-spacing: -0.05em;
+    }
+
+    .cta-panel p {
+      max-width: 600px;
+      color: rgba(255,255,255,0.68);
+      margin-top: 18px;
+    }
+
+    footer {
+      padding: 55px 0 35px;
+      background: #0d120f;
+      color: rgba(255,255,255,0.68);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.4fr repeat(3, 0.7fr);
+      gap: 42px;
+    }
+
+    .footer-brand {
+      color: var(--white);
+      font-size: 1.18rem;
+      font-weight: 800;
+    }
+
+    .footer-about {
+      max-width: 380px;
+      margin-top: 14px;
+      font-size: 0.84rem;
+    }
+
+    .footer-col strong {
+      display: block;
+      color: var(--white);
+      margin-bottom: 14px;
+      font-size: 0.87rem;
+    }
+
+    .footer-col a {
+      display: block;
+      margin-bottom: 9px;
+      font-size: 0.8rem;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding-top: 28px;
+      margin-top: 35px;
+      border-top: 1px solid rgba(255,255,255,0.09);
+      font-size: 0.75rem;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(26px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-36px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-left.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(36px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal-right.show {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    @media (max-width: 1020px) {
+      .nav-links {
+        display: none;
+      }
+
+      .hero-grid,
+      .inspiration-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-showcase {
+        justify-self: start;
+      }
+
+      .category-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 330px 260px 260px;
+      }
+
+      .category-card.large {
+        grid-column: 1 / span 2;
+        grid-row: auto;
+      }
+
+      .category-card.wide {
+        grid-column: 1 / span 2;
+      }
+
+      .feature-grid,
+      .product-grid,
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .inspiration-visual {
+        min-height: 520px;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .container {
+        width: min(100% - 24px, 1200px);
+      }
+
+      .nav-cta {
+        padding: 0 13px;
+        font-size: 0.76rem;
+      }
+
+      .hero {
+        min-height: auto;
+      }
+
+      .hero-grid {
+        padding: 88px 0 70px;
+      }
+
+      .hero h1 {
+        font-size: clamp(3.4rem, 16vw, 5.2rem);
+      }
+
+      .hero-showcase {
+        width: 100%;
+      }
+
+      section {
+        padding: 68px 0;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .section-head p {
+        margin-top: 17px;
+      }
+
+      .category-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: repeat(4, 320px);
+      }
+
+      .category-card.large,
+      .category-card.wide {
+        grid-column: auto;
+      }
+
+      .feature-grid,
+      .product-grid,
+      .process-grid,
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .inspiration-visual {
+        min-height: 430px;
+      }
+
+      .main-room {
+        inset: 0 0 70px 25px;
+      }
+
+      .detail-card {
+        width: 205px;
+      }
+
+      .cta-panel {
+        padding: 38px 24px;
+      }
+
+      .footer-bottom {
+        display: block;
+      }
+
+      .footer-bottom span {
+        display: block;
+        margin-top: 8px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="announcement">
+    <div class="marquee">
+      <span>Premium Home Fixtures</span>
+      <span>Tiles, Faucets, Sinks & Pipes</span>
+      <span>Showroom Consultation Available</span>
+      <span>Modern Materials for Better Living</span>
+      <span>Premium Home Fixtures</span>
+      <span>Tiles, Faucets, Sinks & Pipes</span>
+      <span>Showroom Consultation Available</span>
+      <span>Modern Materials for Better Living</span>
+    </div>
+  </div>
+
+  <header class="nav-shell">
+    <div class="container">
+      <nav>
+        <a class="brand" href="#home">
+          <span class="brand-mark">⌂</span>
+          <span>FormHaus</span>
+        </a>
+
+        <div class="nav-links">
+          <a href="#collections">Collections</a>
+          <a href="#products">Products</a>
+          <a href="#inspiration">Inspiration</a>
+          <a href="#process">How It Works</a>
+        </div>
+
+        <a class="nav-cta" href="#visit">Visit Showroom <span>↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal-left">
+          <span class="eyebrow">Built for modern homes</span>
+          <h1>
+            Practical details.
+            <em>Beautiful spaces.</em>
+          </h1>
+          <p class="hero-copy">
+            Discover a curated range of tiles, sinks, faucets, pipes, showers,
+            bathroom fittings, and renovation essentials designed for lasting everyday use.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#collections">Explore Collections <span>↓</span></a>
+            <a class="btn btn-ghost" href="#inspiration">View Room Ideas</a>
+          </div>
+        </div>
+
+        <div class="hero-showcase reveal-right">
+          <div class="showcase-image">
+            <img
+              src="https://images.unsplash.com/photo-1620626011761-996317b8d101?auto=format&fit=crop&w=900&q=88"
+              alt="Modern bathroom with premium fittings"
+              onerror="this.style.display='none';"
+            />
+          </div>
+          <div class="showcase-topline">
+            <strong>Urban Bath Collection</strong>
+            <span>New Series</span>
+          </div>
+          <div class="showcase-meta">
+            Matte finishes, clean geometry, and water-efficient fittings.
+          </div>
+        </div>
+
+        <div class="hero-badge">Design<br>Build<br>Live</div>
+      </div>
+    </section>
+
+    <section id="collections">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Shop by category</span>
+            <h2>Everything your home needs, under one roof.</h2>
+          </div>
+          <p>
+            From foundational plumbing parts to statement bathroom pieces,
+            our collections balance reliable function with refined design.
+          </p>
+        </div>
+
+        <div class="category-grid">
+          <a class="category-card large reveal" href="#products">
+            <img
+              src="https://images.unsplash.com/photo-1584622781564-1d987f7333c1?auto=format&fit=crop&w=1200&q=88"
+              alt="Bathroom sink and vanity"
+              onerror="this.style.display='none';"
+            />
+            <div class="category-info">
+              <div>
+                <h3>Sinks & Basins</h3>
+                <p>Countertop, wall-mounted, and cabinet-ready designs.</p>
+              </div>
+              <span class="round-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="category-card reveal" href="#products">
+            <img
+              src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=900&q=88"
+              alt="Modern faucet and wash basin"
+              onerror="this.style.display='none';"
+            />
+            <div class="category-info">
+              <div>
+                <h3>Faucets</h3>
+                <p>Brushed, chrome, and matte finishes.</p>
+              </div>
+              <span class="round-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="category-card reveal" href="#products">
+            <img
+              src="https://images.unsplash.com/photo-1595514535415-dae8580c416c?auto=format&fit=crop&w=900&q=88"
+              alt="Decorative ceramic tiles"
+              onerror="this.style.display='none';"
+            />
+            <div class="category-info">
+              <div>
+                <h3>Tiles</h3>
+                <p>Floor, wall, ceramic, and stone-look surfaces.</p>
+              </div>
+              <span class="round-arrow">↗</span>
+            </div>
+          </a>
+
+          <a class="category-card wide reveal" href="#products">
+            <img
+              src="https://images.unsplash.com/photo-1620325867502-221cfb5faa5f?auto=format&fit=crop&w=1200&q=88"
+              alt="Plumbing pipes and fittings"
+              onerror="this.style.display='none';"
+            />
+            <div class="category-info">
+              <div>
+                <h3>Pipes & Plumbing</h3>
+                <p>PVC, fittings, valves, connectors, and maintenance essentials.</p>
+              </div>
+              <span class="round-arrow">↗</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="feature-strip">
+      <div class="container">
+        <div class="feature-grid reveal">
+          <div class="feature">
+            <div class="feature-icon">◫</div>
+            <strong>Curated Materials</strong>
+            <p>Selected for durability, finish quality, and practical installation.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⌁</div>
+            <strong>Showroom Support</strong>
+            <p>Compare finishes, sizes, and combinations before making a decision.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">⚙</div>
+            <strong>Trade Ready</strong>
+            <p>Suitable for homeowners, contractors, interior designers, and developers.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">◇</div>
+            <strong>Modern Selection</strong>
+            <p>Clean shapes, warm neutrals, and timeless hardware for every project.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="products" id="products">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Featured products</span>
+            <h2>Designed to work. Made to belong.</h2>
+          </div>
+          <p>
+            Explore a sample of our most requested fixtures and renovation essentials.
+          </p>
+        </div>
+
+        <div class="product-grid">
+          <article class="product-card reveal">
+            <span class="product-tag">Bathroom</span>
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1584622781867-1c6819d3a36a?auto=format&fit=crop&w=800&q=88"
+                alt="Minimal ceramic basin"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <div class="product-info">
+              <h3>Arc Ceramic Basin</h3>
+              <p>Soft-edge countertop basin with easy-clean glazed surface.</p>
+              <div class="product-bottom">
+                <strong>View details</strong>
+                <span>↗</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <span class="product-tag">Faucet</span>
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1564540583246-934409427776?auto=format&fit=crop&w=800&q=88"
+                alt="Matte black modern faucet"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <div class="product-info">
+              <h3>Line Mixer Tap</h3>
+              <p>Single-lever mixer with a slim profile and matte black finish.</p>
+              <div class="product-bottom">
+                <strong>View details</strong>
+                <span>↗</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <span class="product-tag">Tile</span>
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1615875605825-5eb9bb5d52ac?auto=format&fit=crop&w=800&q=88"
+                alt="Stone texture ceramic tiles"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <div class="product-info">
+              <h3>Stone Mist Tile</h3>
+              <p>Neutral stone-look tile for modern walls and floor applications.</p>
+              <div class="product-bottom">
+                <strong>View details</strong>
+                <span>↗</span>
+              </div>
+            </div>
+          </article>
+
+          <article class="product-card reveal">
+            <span class="product-tag">Plumbing</span>
+            <div class="product-image">
+              <img
+                src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=800&q=88"
+                alt="Plumbing pipes and valves"
+                onerror="this.style.display='none';"
+              />
+            </div>
+            <div class="product-info">
+              <h3>Flow Pipe System</h3>
+              <p>Reliable pipes, elbows, valves, and connectors for everyday projects.</p>
+              <div class="product-bottom">
+                <strong>View details</strong>
+                <span>↗</span>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="inspiration" id="inspiration">
+      <div class="container inspiration-grid">
+        <div class="inspiration-copy reveal-left">
+          <span class="eyebrow">Material inspiration</span>
+          <h2>Create a home that feels considered.</h2>
+          <p>
+            Good interiors begin with a clear material story. Combine tactile tiles,
+            soft neutrals, dark hardware, and clean sanitary fittings for a calm and modern result.
+          </p>
+
+          <div class="material-list">
+            <div class="material-item">
+              <strong>Warm Stone</strong>
+              <span>Walls & Floors</span>
+            </div>
+            <div class="material-item">
+              <strong>Brushed Metal</strong>
+              <span>Faucets & Showers</span>
+            </div>
+            <div class="material-item">
+              <strong>Soft Ceramic</strong>
+              <span>Basins & Accessories</span>
+            </div>
+            <div class="material-item">
+              <strong>Natural Timber</strong>
+              <span>Vanity & Storage</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="inspiration-visual reveal-right">
+          <div class="main-room">
+            <img
+              src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=1100&q=88"
+              alt="Modern bathroom interior with warm materials"
+              onerror="this.style.display='none';"
+            />
+          </div>
+
+          <div class="detail-card">
+            <img
+              src="https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=600&q=88"
+              alt="Bathroom hardware detail"
+              onerror="this.style.display='none';"
+            />
+            <strong>Material Pairing</strong>
+            <span>Warm tile + dark metal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <span class="eyebrow">Simple selection process</span>
+            <h2>From idea to installation.</h2>
+          </div>
+          <p>
+            A straightforward process to help you choose products with confidence.
+          </p>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-card reveal">
+            <div class="process-num">01</div>
+            <h3>Measure</h3>
+            <p>Bring your room dimensions, layout, or contractor measurements.</p>
+          </article>
+
+          <article class="process-card reveal">
+            <div class="process-num">02</div>
+            <h3>Compare</h3>
+            <p>Review sizes, finishes, materials, and practical maintenance needs.</p>
+          </article>
+
+          <article class="process-card reveal">
+            <div class="process-num">03</div>
+            <h3>Match</h3>
+            <p>Build a consistent palette across tiles, faucets, basins, and accessories.</p>
+          </article>
+
+          <article class="process-card reveal">
+            <div class="process-num">04</div>
+            <h3>Install</h3>
+            <p>Confirm product specifications with your installer before fitting.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="visit">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <span class="eyebrow">Plan your next project</span>
+          <h2>Visit our showroom and build your material palette.</h2>
+          <p>
+            See finishes in person, compare product sizes, and discover practical
+            combinations for bathrooms, kitchens, utility areas, and renovation projects.
+          </p>
+
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#home">Explore the Website</a>
+            <a class="btn btn-ghost" href="#collections">Browse Categories</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">⌂ FormHaus</div>
+          <p class="footer-about">
+            A modern home fixture showroom for tiles, sinks, faucets, showers,
+            pipes, plumbing parts, and renovation essentials.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <strong>Collections</strong>
+          <a href="#collections">Tiles</a>
+          <a href="#collections">Basins</a>
+          <a href="#collections">Faucets</a>
+          <a href="#collections">Pipes</a>
+        </div>
+
+        <div class="footer-col">
+          <strong>For Projects</strong>
+          <a href="#process">Homeowners</a>
+          <a href="#process">Contractors</a>
+          <a href="#process">Designers</a>
+          <a href="#process">Developers</a>
+        </div>
+
+        <div class="footer-col">
+          <strong>Information</strong>
+          <a href="#inspiration">Room Ideas</a>
+          <a href="#products">Featured Products</a>
+          <a href="#visit">Showroom</a>
+          <a href="#home">Back to Top</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 FormHaus. All rights reserved.</div>
+        <span>Built for better everyday spaces.</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("show");
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document
+      .querySelectorAll(".reveal, .reveal-left, .reveal-right")
+      .forEach((element) => revealObserver.observe(element));
+
+    const hero = document.querySelector(".hero");
+    window.addEventListener("scroll", () => {
+      const scrollPosition = window.scrollY;
+      if (hero && scrollPosition < window.innerHeight) {
+        hero.style.backgroundPositionY = `${scrollPosition * 0.12}px`;
+      }
+    });
+  </script>
+</body>
+</html>
+'''
+
+path = Path("/mnt/data/formhaus_home_fixtures_store.html")
+path.write_text(html, encoding="utf-8")
+print(f"Created: {path}")
